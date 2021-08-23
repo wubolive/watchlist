@@ -5,16 +5,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-# SQLite URI compatible
-WIN = sys.platform.startswith('win')
-if WIN:
-    prefix = 'sqlite:///'
-else:
-    prefix = 'sqlite:////'
-
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dev'
-app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE', 'data.db'))
+app.config['SECRET_KEY'] = '123456790'
+""" 数据库链接信息，配置来自环境变量 """
+DB_USER = os.environ.get('DATABASE_USERNAME')
+DB_PASS = os.environ.get('DATABASE_PASSWORD')
+DB_HOST = os.environ.get('DATABASE_HOST')
+DB_PORT = os.environ.get('DATABASE_PORT')
+DB_NAME = os.environ.get('DATABASE_DB_NAME')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(DB_USER, DB_PASS, DB_HOST,
+                                                                                             DB_PORT, DB_NAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 关闭对模型修改的监控
 
 db = SQLAlchemy(app)

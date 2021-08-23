@@ -13,12 +13,13 @@ def index():
         # 获取表单数据
         title = request.form.get('title')
         year = request.form.get('year')
+        platform = request.form['platform']
         # 验证表单数据
-        if not title or not year or len(year) > 4 or len(title) > 60:
+        if not title or not year or not platform or len(year) != 4 or len(title) > 60 or len(platform) > 10:
             flash('您输入的内容有误')
             return redirect(url_for('index'))
         # 保存表单到数据库
-        movie = Movie(title=title, year=year)
+        movie = Movie(title=title, year=year, platform=platform)
         db.session.add(movie)
         db.session.commit()
         flash('数据插入成功')
@@ -35,13 +36,15 @@ def edit(movie_id):
     if request.method == 'POST':  # 处理编辑表单的提交请求
         title = request.form['title']
         year = request.form['year']
+        platform = request.form['platform']
 
-        if not title or not year or len(year) != 4 or len(title) > 60:
+        if not title or not year or not platform or len(year) != 4 or len(title) > 60 or len(platform) > 10:
             flash('Invalid input.')
             return redirect(url_for('edit', movie_id=movie_id))  # 重定向回对应的编辑页面
 
         movie.title = title  # 更新标题
         movie.year = year  # 更新年份
+        movie.platform = platform  # 更新平台
         db.session.commit()  # 提交数据库会话
         flash('Item updated.')
         return redirect(url_for('index'))  # 重定向回主页

@@ -3,8 +3,15 @@
 {% block content %}
 <h3>Edit item</h3>
 <form method="post">
-    Name <input type="text" name="title" autocomplete="off" required value="{{ movie.title }}">
-    Year <input type="text" name="year" autocomplete="off" required value="{{ movie.year }}">
-    <input class="btn" type="submit" name="submit" value="Update">
+    <fieldset>
+    <legend>修改 {{ movie.title }} 信息:</legend>
+    名字 <input type="text" name="title" autocomplete="off" required value="{{ movie.title }}">
+    年份 <input type="text" name="year" autocomplete="off" required value="{{ movie.year }}">
+    平台: <select name="platform">
+            <option value="douban" required value="{{ movie.platform }}">豆瓣</option>
+            <option value="imdb" required value="{{ movie.platform }}">IMDb</option>
+        </select>
+    <input class="btn" type="submit" name="submit" value="更新">
+    </fieldset>
 </form>
 {% endblock %}
