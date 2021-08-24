@@ -19,3 +19,13 @@ DATABASE_PASSWORD=<数据库密码>
 #### 启动程序
 ```.bash
 python manage.py
+```
+
+
+#### Docker运行
+```.bash
+docker build -t watchlist
+docker-compose up -d
+```
+
+访问服务：http://127.0.0.1:5000

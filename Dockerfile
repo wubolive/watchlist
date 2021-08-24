@@ -1,4 +1,4 @@
-FROM python3.7
+FROM python:3.6-slim
 
 WORKDIR /opt
 
