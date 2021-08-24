@@ -1,5 +1,8 @@
 # watchlist
 
+该程序来自https://read.helloflask.com教程二次开发
+
+Demo：[http://36.103.245.156:5000](http://36.103.245.156:5000)
 
 #### 需要设置环境变量
 ```.env
