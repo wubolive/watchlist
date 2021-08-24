@@ -5,3 +5,4 @@ __pycache__
 .virtenv
 .idea
 .env
+.data.db
