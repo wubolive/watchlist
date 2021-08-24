@@ -1,6 +1,6 @@
 # watchlist
 
-该程序来自https://read.helloflask.com教程二次开发
+学习参考 https://read.helloflask.com 教程，进行二次开发的电影列表程序
 
 Demo：[http://36.103.245.156:5000](http://36.103.245.156:5000)
 
