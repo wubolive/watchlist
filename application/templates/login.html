@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>Login</h3>
+
 <form method="post">
-    Username<br>
-    <input type="text" name="username" required><br><br>
-    Password<br>
+    <fieldset>
+    <legend> <h3> 登入Watchlist </h3> </legend><br>
+    账号<br>
+    <input type="text" name="username" required><br>
+    密码<br>
     <!-- 密码输入框的 type 属性使用 password，会将输入值显示为圆点 -->
-    <input type="password" name="password" required><br><br>
-    <input class="btn" type="submit" name="submit" value="Submit">
+    <input type="password" name="password" required><br>
+    <input class="btn" type="submit" name="submit" value="登入">
+    </fieldset>
+    <p><a href="{{ url_for('regist') }}"> 注册账号</a></p>
 </form>
 {% endblock %}

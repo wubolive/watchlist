@@ -25,14 +25,15 @@ def index():
         flash('数据插入成功')
         return redirect(url_for('index'))
 
+    roles = User.query.first()
     page = request.args.get('page', 1, type=int)    # 从查询字符串获取当前页数
     per_page = request.args.get('per_page', 10, type=int)
-
     paginate = Movie.query.order_by('id').paginate(page, per_page, error_out=False)
     movies = paginate.items
-    return render_template('index.html', paginate=paginate, movies=movies)
+    return render_template('index.html', roles=roles, paginate=paginate, movies=movies)
 
 
+# 留言版
 @app.route('/movie/guestbook', methods=['GET', 'POST'])
 def guestbook():
     return redirect(url_for('guestbook'))
@@ -94,6 +95,7 @@ def settings():
     return render_template('settings.html')
 
 
+# 登入
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -104,16 +106,43 @@ def login():
             flash('Invalid input.')
             return redirect(url_for('login'))
 
-        user = User.query.first()
+        user = User.query.filter_by(username=username).first()
         if username == user.username and user.validate_password(password):
             login_user(user)
-            flash('Login success.')
+            flash('登入成功！')
             return redirect(url_for('index'))
 
-        flash('Invalid username or password.')
+        flash('账号或密码错误！')
         return redirect(url_for('login'))
 
     return render_template('login.html')
+
+
+# 用户注册
+@app.route('/regist', methods=['GET', 'POST'])
+def regist():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if not username or not password or not confirm_password:
+            error = '请输入正确的用户信息'
+        elif User.query.filter_by(username=username).first():
+            error = '该用户已存在!'
+        elif password != confirm_password:
+            error = '两次密码不一致，请重新输入'
+        else:
+            user = User(username=username, name=username, role='user')
+            user.set_password(password)
+            db.session.add(user)
+
+            db.session.commit()
+            flash('用户注册成功.')
+            return redirect(url_for('login'))
+
+    return render_template('regist.html', error=error)
 
 
 @app.route('/logout')

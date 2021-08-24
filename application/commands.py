@@ -25,13 +25,14 @@ def forge():
     db.create_all()
 
     # 全局的两个变量移动到这个函数内
-    name = 'Grey Li'
+    name = '吴波'
     movies = [
         {'title': 'My Neighbor Totoro', 'year': '1988', 'platform': 'imdb'},
         {'title': 'Dead Poets Society', 'year': '1989', 'platform': 'imdb'},
         {'title': 'A Perfect World', 'year': '1993', 'platform': 'imdb'},
+        {'title': '黑寡妇', 'year': '2021', 'platform': 'douban'},
         {'title': 'Leon', 'year': '1994', 'platform': 'imdb'},
-        {'title': 'Mahjong', 'year': '1996', 'platform': 'imdb'},
+        {'title': '变形金刚', 'year': '2008', 'platform': 'douban'},
         {'title': 'Swallowtail Butterfly', 'year': '1996', 'platform': 'imdb'},
         {'title': 'King of Comedy', 'year': '1999', 'platform': 'imdb'},
         {'title': 'Devils on the Doorstep', 'year': '1999', 'platform': 'imdb'},
@@ -64,6 +65,7 @@ def admin(username, password):
         click.echo('Updating user...')
         user.username = username
         user.set_password(password)
+        user.role = 'admin'
     else:
         click.echo('Creating user...')
         user = User(username=username, name='Admin')

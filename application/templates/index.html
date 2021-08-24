@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and roles.role == 'admin' %}
 <form method="post">
     <fieldset>
     <legend>插入新的电影条目:</legend>
@@ -19,7 +19,7 @@
     {% for movie in movies %}
     <li>{{ movie.title }} - {{ movie.year }}
         <span class="float-right">
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated and roles.role == 'admin' %}
             <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">编辑</a>
             <form class="inline-form" method="post" action="{{ url_for('delete', movie_id=movie.id) }}">
                 <input class="btn" type="submit" name="delete" value="删除" onclick="return confirm('你确认删除吗?')">
