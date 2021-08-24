@@ -43,13 +43,12 @@ footer {
 /* 龙猫图片 */
 .totoro {
     display: block;
-    margin: 0 auto;
+    margin: auto;
     height: 100px;
 }
 
 nav ul {
     list-style-type: none;
-    margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #333;
@@ -74,7 +73,7 @@ nav li a:hover {
 .float-right {
     float: right;
 }
-
+/*超链接按钮*/
 .imdb {
     font-size: 12px;
     font-weight: bold;
@@ -85,13 +84,18 @@ nav li a:hover {
     padding: 3px 5px;
 }
 .douban {
-    font-size: 12px;
     font-weight: bold;
     color: black;
     text-decoration: none;
     background: #2473b2;
     border-radius: 5px;
     padding: 3px 5px;
+}
+
+/*页码*/
+.page {
+    margin: auto;
+    float: right;
 }
 
 /*输入框和提交按钮*/

@@ -20,6 +20,7 @@
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">首页</a></li>
+            <li><a href="{{ url_for('guestbook') }}">留言板</a></li>
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('settings') }}">设置</a></li>
             <li><a href="{{ url_for('logout') }}">退出</a></li>
@@ -30,6 +31,7 @@
     </nav>
     {% block content %}{% endblock %}
     <footer>
+        <img alt="Walking Totoro" class="totoro" src="{{ url_for('static', filename='images/totoro.gif') }}" title="to~to~ro~">
         <small>&copy; 2021 <a href="http://helloflask.com/tutorial">Watchlist</a></small>
 	</footer>
 </body>

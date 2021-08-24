@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>{{ movies|length }} Titles</p>
 {% if current_user.is_authenticated %}
 <form method="post">
     <fieldset>
@@ -23,7 +22,7 @@
             {% if current_user.is_authenticated %}
             <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">编辑</a>
             <form class="inline-form" method="post" action="{{ url_for('delete', movie_id=movie.id) }}">
-                <input class="btn" type="submit" name="delete" value="删除" onclick="return confirm('Are you sure?')">
+                <input class="btn" type="submit" name="delete" value="删除" onclick="return confirm('你确认删除吗?')">
             </form>
             {% endif %}
             {% if movie.platform == 'imdb'  %}
@@ -35,5 +34,19 @@
     </li>
     {% endfor %}
 </ul>
-<img alt="Walking Totoro" class="totoro" src="{{ url_for('static', filename='images/totoro.gif') }}" title="to~to~ro~">
+<p class="page">
+共{{ paginate.total }}条
+
+{% if paginate.has_prev %}
+    <a class="btn" href="/?page={{ paginate.prev_num }}">上一页</a>
+{% endif %}
+页码:
+{% for i in paginate.iter_pages() %}
+    <a href="/?page={{ i }}">{{ i }}</a>
+{% endfor %}
+{% if paginate.has_next %}
+    <a class="btn" href="/?page={{ paginate.next_num }}">下一页</a>
+{% endif %}
+</p>
+<br>
 {% endblock %}

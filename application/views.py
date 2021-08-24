@@ -24,8 +24,18 @@ def index():
         db.session.commit()
         flash('数据插入成功')
         return redirect(url_for('index'))
-    movies = Movie.query.all()
-    return render_template('index.html', movies=movies)
+
+    page = request.args.get('page', 1, type=int)    # 从查询字符串获取当前页数
+    per_page = request.args.get('per_page', 10, type=int)
+
+    paginate = Movie.query.order_by('id').paginate(page, per_page, error_out=False)
+    movies = paginate.items
+    return render_template('index.html', paginate=paginate, movies=movies)
+
+
+@app.route('/movie/guestbook', methods=['GET', 'POST'])
+def guestbook():
+    return redirect(url_for('guestbook'))
 
 
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
@@ -112,3 +122,4 @@ def logout():
     logout_user()  # 登出用户
     flash('Goodbye.')
     return redirect(url_for('index'))  # 重定向回首页
+
