@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<form method="post">
+    <fieldset>
+    <legend>留言:</legend>
+{#    Message: <input type="textarea" cols="500" name="message"  autocomplete="off" required>#}
+        <textarea name="message" cols="65" rows="3"></textarea>
+        <br>
+        <input class="btn" type="submit" name="submit" value="添加">
+    </fieldset>
+</form>
+{% endif %}
+<ul class="movie-list">
+    {% for guestbook in guestbooks %}
+    <li> {{ guestbook.name.name }} - {{ guestbook.times }}
+        <span class="float-right">
+            {% if current_user.is_authenticated and roles.role == 'admin' %}
+            <form class="inline-form" method="post" action="{{ url_for('guestbook_delete', guestbook_id=guestbook.id) }}">
+                <input class="btn" type="submit" name="guestbook_delete" value="删除" onclick="return confirm('你确认删除吗?')">
+            </form>
+            {% endif %}
+        </span>
+        <p> {{ guestbook.message  }} </p>
+    </li>
+    {% endfor %}
+</ul>
+<p class="page">
+共{{ paginate.total }}条
+
+{% if paginate.has_prev %}
+    <a class="btn" href="/guestbook?page={{ paginate.prev_num }}">上一页</a>
+{% endif %}
+页码:
+{% for i in paginate.iter_pages() %}
+    <a href="/guestbook?page={{ i }}">{{ i }}</a>
+{% endfor %}
+{% if paginate.has_next %}
+    <a class="btn" href="/guestbook?page={{ paginate.next_num }}">下一页</a>
+{% endif %}
+</p>
+<br>
+{% endblock %}

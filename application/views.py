@@ -1,8 +1,8 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
-from application.models import User, Movie
+from application.models import User, Movie, GuestBook
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -39,9 +39,44 @@ def index():
 
 
 # 留言版
-@app.route('/movie/guestbook', methods=['GET', 'POST'])
+@app.route('/guestbook', methods=['GET', 'POST'])
 def guestbook():
-    return redirect(url_for('guestbook'))
+
+    roles = 'user'  # 默认为用户角色
+    # 获取用户角色
+    if current_user.is_authenticated:
+        user_id = current_user.id
+        username = current_user.username
+        roles = User.query.filter_by(username=username).first()
+
+    if request.method == 'POST':
+        if not current_user.is_authenticated:
+            return redirect(url_for('guestbook'))
+        message = request.form.get('message')
+        if not message:
+            flash('请输入正确的内容')
+
+        messages = GuestBook(message=message, user_id=user_id)
+        db.session.add(messages)
+        db.session.commit()
+        return redirect(url_for('guestbook'))
+
+    page = request.args.get('page', 1, type=int)    # 从查询字符串获取当前页数
+    per_page = request.args.get('per_page', 5, type=int)
+    paginate = GuestBook.query.order_by('id').paginate(page, per_page, error_out=False)
+    guestbooks = paginate.items
+
+    return render_template('guestbook.html', roles=roles, paginate=paginate, guestbooks=guestbooks)
+
+
+@app.route('/guestbook/delete/<int:guestbook_id>', methods=['POST'])
+@login_required
+def guestbook_delete(guestbook_id):
+    guestbooks = GuestBook.query.get_or_404(guestbook_id)
+    db.session.delete(guestbooks)
+    db.session.commit()
+    flash('Item deleted.')
+    return redirect(url_for('guestbook'))  # 重定向回主页
 
 
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])

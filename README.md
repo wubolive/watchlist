@@ -18,7 +18,10 @@ DATABASE_PASSWORD=<数据库密码>
 - 删除表后重新创建：`flask initdb --drop`
 - 初始化虚拟数据：`flask forge`
 - 设置管理员账号密码: `flask admin`
-
+- 数据库迁移
+  - 创建迁移存储库: `flask db init`
+  - 生成迁移脚本: `flask db migrate -m "更新了什么内容"`
+  - 将迁移脚本应用到数据库中: `flask db upgrade`
 #### 启动程序
 ```.bash
 python manage.py
