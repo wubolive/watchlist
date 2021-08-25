@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
@@ -25,7 +25,12 @@ def index():
         flash('数据插入成功')
         return redirect(url_for('index'))
 
-    roles = User.query.first()
+    # 获取用户角色
+    roles = 'user'  # 默认为用户角色
+    if current_user.is_authenticated:
+        username = current_user.username
+        roles = User.query.filter_by(username=username).first()
+
     page = request.args.get('page', 1, type=int)    # 从查询字符串获取当前页数
     per_page = request.args.get('per_page', 10, type=int)
     paginate = Movie.query.order_by('id').paginate(page, per_page, error_out=False)
@@ -107,10 +112,11 @@ def login():
             return redirect(url_for('login'))
 
         user = User.query.filter_by(username=username).first()
-        if username == user.username and user.validate_password(password):
-            login_user(user)
-            flash('登入成功！')
-            return redirect(url_for('index'))
+        if user:
+            if username == user.username and user.validate_password(password):
+                login_user(user)
+                flash('登入成功！')
+                return redirect(url_for('index'))
 
         flash('账号或密码错误！')
         return redirect(url_for('login'))

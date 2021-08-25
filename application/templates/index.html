@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if current_user.is_authenticated and roles.role == 'admin' %}
+{% if current_user.is_authenticated %}
 <form method="post">
     <fieldset>
     <legend>插入新的电影条目:</legend>
