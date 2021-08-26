@@ -21,14 +21,15 @@
             <small style="color:Gray;" >
                 {{ guestbook.times.strftime("%Y-%m-%d %H:%M:%S") }}
             </small>
+            <span class="float-right">
+                {% if current_user.is_authenticated and roles.role == 'admin' %}
+                    <form class="inline-form" method="post" action="{{ url_for('guestbook_delete', guestbook_id=guestbook.id) }}">
+                        <input class="btn" type="submit" name="guestbook_delete" value="删除" onclick="return confirm('你确认删除吗?')">
+                    </form>
+                {% endif %}
+            </span>
         </h3>
-        <span class="float-right">
-            {% if current_user.is_authenticated and roles.role == 'admin' %}
-            <form class="inline-form" method="post" action="{{ url_for('guestbook_delete', guestbook_id=guestbook.id) }}">
-                <input class="btn" type="submit" name="guestbook_delete" value="删除" onclick="return confirm('你确认删除吗?')">
-            </form>
-            {% endif %}
-        </span>
+
         <p>{{ guestbook.message  }}</p>
     </li>
     {% endfor %}
