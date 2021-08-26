@@ -33,7 +33,7 @@ def index():
 
     page = request.args.get('page', 1, type=int)    # 从查询字符串获取当前页数
     per_page = request.args.get('per_page', 10, type=int)
-    paginate = Movie.query.order_by('id').paginate(page, per_page, error_out=False)
+    paginate = Movie.query.order_by(Movie.id.desc()).paginate(page, per_page, error_out=False)
     movies = paginate.items
     return render_template('index.html', roles=roles, paginate=paginate, movies=movies)
 
@@ -63,7 +63,7 @@ def guestbook():
 
     page = request.args.get('page', 1, type=int)    # 从查询字符串获取当前页数
     per_page = request.args.get('per_page', 5, type=int)
-    paginate = GuestBook.query.order_by('id').paginate(page, per_page, error_out=False)
+    paginate = GuestBook.query.order_by(GuestBook.id.desc()).paginate(page, per_page, error_out=False)
     guestbooks = paginate.items
 
     return render_template('guestbook.html', roles=roles, paginate=paginate, guestbooks=guestbooks)

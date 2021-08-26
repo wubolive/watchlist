@@ -30,7 +30,7 @@ python manage.py
 
 #### Docker运行
 ```.bash
-docker build -t watchlist
+docker build -t watchlist .
 docker-compose up -d
 ```
 
